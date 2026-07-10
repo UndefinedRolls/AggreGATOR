@@ -1,9 +1,8 @@
 import {createUser, getUserByName} from "./lib/db/users.js";
 import {setUser} from "./config.js";
 export async function handlerRegister(cmdName:string, ...args:string[]): Promise<void>{
-    if(!args[0]){
-        throw new Error("No user name provided.  User not logged in")
-
+    if(args.length !== 1) {
+        throw new Error(`usage: ${cmdName} <name>`);
     }
     const user = args[0];
     const record = await getUserByName(user);

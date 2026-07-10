@@ -5,6 +5,8 @@ import {handlerRegister} from "./Handler_Register.js";
 import {handlerReset} from "./Handler_Reset.js";
 import {handlerUsers} from "./Handler_Users.js";
 import {handlerAgg} from "./Handler_Agg.js";
+import {handlerAddFeed} from "./Handler_addFeed.js";
+import {handlerFeeds} from "./Handler_feeds.js";
 
 async function main() {
     let cmdReg:commandRegistry = {}
@@ -13,6 +15,8 @@ async function main() {
     registerCommand(cmdReg, "reset", handlerReset);
     registerCommand(cmdReg, "users", handlerUsers)
     registerCommand(cmdReg, "agg", handlerAgg);
+    registerCommand(cmdReg, "addfeed", handlerAddFeed);
+    registerCommand(cmdReg, "feeds", handlerFeeds);
     const commandName = argv[2]
     if (commandName === undefined){
         console.error("No command provided. Terminating.");
