@@ -20,3 +20,4 @@ export async function getFeedsAndUserName(){
     return db.select({Username:users.name, Name:feeds.name, ID:feeds.id, URL:feeds.url}).from(feeds).innerJoin(users, eq(users.id, feeds.user_id));
 
 }
+
