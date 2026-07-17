@@ -1,8 +1,8 @@
-import { setUser } from "./config";
-import { getUserByName } from "./lib/db/users";
+import { setUser } from "./config.js";
+import { getUserByName } from "./lib/db/users.js";
 export async function handlerLogin(cmdName, ...args) {
-    if (!args[0]) {
-        throw new Error("No user name provided.  User not logged in");
+    if (args.length !== 1) {
+        throw new Error(`usage: ${cmdName} <name>`);
     }
     const user = args[0];
     if (await getUserByName(user) === undefined) {

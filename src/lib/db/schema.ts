@@ -20,7 +20,7 @@ export const feeds = pgTable("feeds", {
         .$onUpdate(()=>new Date()),
     name: text("name").notNull(),
     url: text("url").notNull().unique(),
-    user_id: text("user_id")
+    user_id: uuid("user_id")
         .references(() => users.id, {onDelete: 'cascade'})
         .notNull()
 
@@ -33,10 +33,10 @@ export const feed_follows = pgTable("feed_follows", {
         .notNull()
         .defaultNow()
         .$onUpdate(()=>new Date()),
-    user_id: text("user_id")
+    user_id: uuid("user_id")
         .references(() => users.id, {onDelete: 'cascade'})
         .notNull(),
-    feed_id: text("feed_id")
+    feed_id: uuid("feed_id")
         .references(() => feeds.id, {onDelete: 'cascade'})
         .notNull()},
     (t)=>[ unique().on(t.user_id, t.feed_id),

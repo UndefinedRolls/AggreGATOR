@@ -1,5 +1,5 @@
 import {db} from "./index.js";
-import {feeds, users} from "./schema.js";
+import {feed_follows, feeds, users} from "./schema.js";
 import {eq} from "drizzle-orm";
 
 export type Feed = typeof feeds.$inferSelect;
@@ -17,7 +17,17 @@ export async function getAllFeeds(){
     return db.select().from(feeds);
 }
 export async function getFeedsAndUserName(){
-    return db.select({Username:users.name, Name:feeds.name, ID:feeds.id, URL:feeds.url}).from(feeds).innerJoin(users, eq(users.id, feeds.user_id));
+//    return db.select({Username:users.name, Name:feeds.name, ID:feeds.id, URL:feeds.url}).from(feeds).innerJoin(users, eq(users.id, feeds.user_id));
+    return db.select({feed:feeds, user:users}).from(feeds).innerJoin(users, eq(users.id, feeds.user_id));
+
+}
+export async function getFeedsByURL(url:string){
+    const [result] = await db.select().from(feeds).where(eq(feeds.url, url));
+   return result;
 
 }
 
+export async function getFeedByID(id:string){
+    const [result] = await db.select().from(feeds).where(eq(feeds.id, id));
+    return result;
+}

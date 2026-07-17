@@ -4,7 +4,7 @@ import {createFeedFollows, getFeedFollowsForUserByURL} from "./lib/db/feed_follo
 import {getUserByName} from "./lib/db/users.js";
 import {printFeed, printFeedFollows, printFeedList} from "./helper_functions.js";
 
-export async function handlerFollow(cmdName:string, ...args:string[]): Promise<void>{
+export async function handlerFollowing(cmdName:string, ...args:string[]): Promise<void>{
     if (args.length < 1){
         throw new Error(`usage: ${cmdName} <url>`);
     }

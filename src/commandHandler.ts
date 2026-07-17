@@ -1,5 +1,3 @@
-import {setUser} from "./config";
-
 type commandHandler = (
     cmdName: string,
     ...args: string[]
@@ -14,3 +12,4 @@ export function registerCommand(registry:commandRegistry, cmdName:string, handle
 export async function runCommand(registry:commandRegistry, cmdName:string, ...args:string[]){
     await registry[cmdName](cmdName, ...args);
 }
+

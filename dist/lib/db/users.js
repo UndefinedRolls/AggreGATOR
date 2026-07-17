@@ -15,3 +15,6 @@ export async function resetUser() {
 export async function getUsers() {
     return db.select({ user_name: users.name }).from(users);
 }
+export async function getUserByID(id) {
+    return db.select({ user_name: users.name }).from(users).where(eq(users.id, id));
+}
