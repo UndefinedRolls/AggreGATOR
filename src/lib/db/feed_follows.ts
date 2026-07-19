@@ -26,14 +26,14 @@ async function returnFollowFeedsByID(joint_id:string){
 export async function getFeedFollowsForUser(user_id:string){
     return db.select({feed:feeds, user:users})
         .from(feed_follows)
-        .innerJoin(feeds, eq(feeds.user_id, user_id))
-        .innerJoin(users, eq(users.id, user_id))
+        .innerJoin(feeds, eq(feed_follows.feed_id, feeds.id))
+        .innerJoin(users, eq(users.id, feed_follows.user_id))
         .where(eq(feed_follows.user_id, user_id));
 
 }
 export async function getFeedFollowsForUserByURL(user_id:string, url:string){
     try {
-    const [result] = await db.select({feed_name:feeds.name, user_name:users.name, follow_id:feed_follows.id})
+    const [result] = await db.select({feed:feeds, user:users, feed_follows:feed_follows})
         .from(feed_follows)
         .innerJoin(feeds, eq(feed_follows.feed_id, feeds.id))
         .innerJoin(users, eq(feed_follows.user_id, users.id))
@@ -43,5 +43,9 @@ export async function getFeedFollowsForUserByURL(user_id:string, url:string){
     console.error("DEBUG ERROR:", err);
     throw err;
     }
+}
+
+export async function deleteFeedFollows(follow_id:string){
+    return db.delete(feed_follows).where(eq(feed_follows.id, follow_id));
 }
 

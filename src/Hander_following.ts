@@ -1,27 +1,15 @@
-import {getFeedsByURL} from "./lib/db/feeds.js";
 import {readConfig} from "./config.js";
-import {createFeedFollows, getFeedFollowsForUserByURL} from "./lib/db/feed_follows.js";
-import {getUserByName} from "./lib/db/users.js";
-import {printFeed, printFeedFollows, printFeedList} from "./helper_functions.js";
+import {getFeedFollowsForUser} from "./lib/db/feed_follows.js";
+import {getUserByName, User} from "./lib/db/users.js";
+import {printFeedList} from "./helper_functions.js";
 
-export async function handlerFollowing(cmdName:string, ...args:string[]): Promise<void>{
-    if (args.length < 1){
-        throw new Error(`usage: ${cmdName} <url>`);
-    }
+export async function handlerFollowing(cmdName:string, user:User, ...args:string[]): Promise<void>{
 
-    const url:string = args[0];
-    const user:string = readConfig().currentUserName;
-    const feed = await getFeedsByURL(url);
-    if (!feed){
-        throw new Error("feed not found.  use: addfeed <feed_name> <url>")
-    }
-    const user_data = await getUserByName(user);
-    const follows = await getFeedFollowsForUserByURL(user_data.id, url);
-    if (follows){
-        throw new Error(`${user} already follows ${follows.feed_name}`)
-    }
-    const newFollow = await createFeedFollows(feed.id, user_data.id);
+    const follows = await getFeedFollowsForUser(user.id);
 
-    printFeedFollows(newFollow);
+    if (follows.length === 0){
+        console.log(`user ${user.name} does not follow any feeds.`)
+    }
+    printFeedList(follows);
 
 }
