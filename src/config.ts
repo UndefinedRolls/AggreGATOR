@@ -13,10 +13,12 @@ export function setUser(userName:string):void {
     writeConfig(newConfig);
 }
 
-export function readConfig(): Config{
+export function readConfig(): Config {
     const new_path = getConfigFilePath();
-    const cfg = fs.readFileSync(`${new_path}`, {encoding:'utf-8'});
+
+    const cfg = fs.readFileSync(`${new_path}`, {encoding: 'utf-8'});
     return validateConfig(cfg);
+
 }
 
 function validateConfig(rawConfig:any):Config{
@@ -31,7 +33,7 @@ function validateConfig(rawConfig:any):Config{
     }
 }
 
-function getConfigFilePath():string{
+export function getConfigFilePath():string{
     const homeDir:string = os.homedir();
     return path.join(homeDir, "/.gatorconfig.json");
 }

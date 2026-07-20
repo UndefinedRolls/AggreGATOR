@@ -25,6 +25,7 @@ async function main() {
     registerCommand(cmdReg, "following", middlewareLoggedIn(handlerFollowing));
     registerCommand(cmdReg, "unfollow", middlewareLoggedIn(handlerUnfollow));
     registerCommand(cmdReg, "browse", middlewareLoggedIn(handlerBrowse));
+
     const commandName = argv[2]
     if (commandName === undefined){
         console.error("No command provided. Terminating.");

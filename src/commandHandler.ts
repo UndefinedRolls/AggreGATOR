@@ -15,6 +15,7 @@ type UserCommandHandler = (
 
 export function middlewareLoggedIn(handler: UserCommandHandler): commandHandler {
     return async (cmd:string, ...args:string[]) => {
+
         const current_user = readConfig().currentUserName;
 
         const user = await getUserByName(current_user);
