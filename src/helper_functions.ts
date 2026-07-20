@@ -1,4 +1,4 @@
-import {Feed} from "./lib/db/feeds.js";
+import {Feed, getAllFeeds} from "./lib/db/feeds.js";
 import {User} from "./lib/db/users.js";
 import {FeedFollow} from "./lib/db/feed_follows.js";
 
@@ -28,4 +28,11 @@ export function printFeedFollows(data: {feed:Feed, user:User, follows:FeedFollow
         console.log(`* Updated:         ${data.follows.updatedAt}`);
         console.log(`* Name:            ${data.feed.name}`);
         console.log(`* User:            ${data.user.name}`);
-    }
+
+}
+
+export async function getNextFeedToFetch():Promise<Feed> {
+    const allFeeds = await getAllFeeds();
+    const new_feed:Feed = allFeeds[0];
+    return new_feed;
+}
