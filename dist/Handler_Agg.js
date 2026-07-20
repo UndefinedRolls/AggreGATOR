@@ -1,11 +1,42 @@
-import { fetchFeed } from "./fetchFeed.js";
+import { scrapeFeeds } from "./helper_functions.js";
 export async function handlerAgg(cmdName, ...args) {
-    if (!args[0]) {
-        //throw new Error("Feed Location required");
-        var url = "https://www.wagslane.dev/index.xml";
+    if (args.length == 0) {
+        throw new Error(`Usage: ${cmdName} <time_between_reqs>`);
+    }
+    const time = parseDuration(args[0]);
+    convert_time(time);
+    await scrapeFeeds();
+    const interval = setInterval(async () => { await scrapeFeeds(); }, time);
+    await new Promise((resolve) => {
+        process.on("SIGINT", () => {
+            console.log("Shutting down feed aggregator...");
+            clearInterval(interval);
+            resolve();
+        });
+    });
+}
+function parseDuration(durationString) {
+    const regex = /^(\d+)(ms|s|m|h)$/;
+    const match = durationString.match(regex);
+    if (match == null) {
+        throw new Error(`Invalid duration string: ${match}`);
+    }
+    const factors = { 's': 1000, 'm': 60000, 'h': 3600000, 'ms': 1 };
+    const time = parseInt(match[1]);
+    const time_scale = match[2];
+    const factor = factors[time_scale];
+    return time * factor;
+}
+function convert_time(time_in_ms) {
+    let seconds = time_in_ms / 1000;
+    let minutes = Math.floor(seconds / 60);
+    seconds = seconds - (minutes * 60);
+    const hours = Math.floor(minutes / 60);
+    minutes = minutes - (hours * 60);
+    if (hours > 0) {
+        console.log(`Collecting Feeds every ${hours}h:${minutes}m:${seconds}s`);
     }
     else {
-        url = args[0];
+        console.log(`Collecting Feeds every ${minutes}m:${seconds}s`);
     }
-    console.log(await fetchFeed(url));
 }

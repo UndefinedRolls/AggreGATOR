@@ -10,6 +10,7 @@ import {handlerFeeds} from "./Handler_feeds.js";
 import {handlerFollow} from "./Handler_follow.js";
 import {handlerFollowing} from "./Hander_following.js";
 import {handlerUnfollow} from "./Handler_Unfollow.js";
+import {handlerBrowse} from "./Handler_Browse.js";
 
 async function main() {
     let cmdReg:commandRegistry = {}
@@ -23,6 +24,7 @@ async function main() {
     registerCommand(cmdReg, "follow", middlewareLoggedIn(handlerFollow));
     registerCommand(cmdReg, "following", middlewareLoggedIn(handlerFollowing));
     registerCommand(cmdReg, "unfollow", middlewareLoggedIn(handlerUnfollow));
+    registerCommand(cmdReg, "browse", middlewareLoggedIn(handlerBrowse));
     const commandName = argv[2]
     if (commandName === undefined){
         console.error("No command provided. Terminating.");

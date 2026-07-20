@@ -3,7 +3,6 @@ import { readConfig } from "./config.js";
 export async function handlerUsers(cmdName, ...args) {
     const cfg = readConfig();
     const current_user = cfg.currentUserName;
-    console.log(`${cfg.dbUrl}`);
     const database = await getUsers();
     let print_str = ``;
     for (const record of database) {

@@ -15,6 +15,41 @@
       "when": 1784398176359,
       "tag": "0001_harsh_nightmare",
       "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "7",
+      "when": 1784570027485,
+      "tag": "0002_dear_radioactive_man",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "7",
+      "when": 1784570488869,
+      "tag": "0003_illegal_wendell_vaughn",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "7",
+      "when": 1784573701462,
+      "tag": "0004_violet_captain_britain",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "7",
+      "when": 1784574209291,
+      "tag": "0005_daily_doctor_spectrum",
+      "breakpoints": true
+    },
+    {
+      "idx": 6,
+      "version": "7",
+      "when": 1784577784439,
+      "tag": "0006_superb_magdalene",
+      "breakpoints": true
     }
   ]
 }

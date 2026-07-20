@@ -1,6 +1,8 @@
-import {Feed, getAllFeeds} from "./lib/db/feeds.js";
+import {Feed, getAllFeeds, markFeedFetched} from "./lib/db/feeds.js";
 import {User} from "./lib/db/users.js";
 import {FeedFollow} from "./lib/db/feed_follows.js";
+import {fetchFeed} from "./fetchFeed.js";
+import {createPost} from "./lib/db/posts.js";
 
 export function printFeed(data: {feed:Feed, user:User}| {feed:Feed, user:User, follows:FeedFollow}){
     console.log(`* ID:              ${data.feed.id}`);
@@ -35,4 +37,22 @@ export async function getNextFeedToFetch():Promise<Feed> {
     const allFeeds = await getAllFeeds();
     const new_feed:Feed = allFeeds[0];
     return new_feed;
+}
+
+export async function scrapeFeeds():Promise<void> {
+    const feed:Feed = await getNextFeedToFetch();
+    const url:string = feed.url;
+    const id:string=feed.id;
+    try {
+        const feed_text = await fetchFeed(url);
+        for (const item of feed_text.channel.item){
+            await createPost(item, feed.id);
+        }
+        await markFeedFetched(id);
+    }
+    catch(err){
+        console.log(`failed to fetch ${url}: ${err}`);
+    }
+
+
 }

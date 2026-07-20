@@ -1,4 +1,4 @@
-import { registerCommand, runCommand } from "./commandHandler.js";
+import { registerCommand, runCommand, middlewareLoggedIn } from "./commandHandler.js";
 import { handlerLogin } from "./Handler_Login.js";
 import { argv } from "node:process";
 import { handlerRegister } from "./Handler_Register.js";
@@ -8,6 +8,8 @@ import { handlerAgg } from "./Handler_Agg.js";
 import { handlerAddFeed } from "./Handler_addFeed.js";
 import { handlerFeeds } from "./Handler_feeds.js";
 import { handlerFollow } from "./Handler_follow.js";
+import { handlerFollowing } from "./Hander_following.js";
+import { handlerUnfollow } from "./Handler_Unfollow.js";
 async function main() {
     let cmdReg = {};
     registerCommand(cmdReg, "login", handlerLogin);
@@ -15,9 +17,11 @@ async function main() {
     registerCommand(cmdReg, "reset", handlerReset);
     registerCommand(cmdReg, "users", handlerUsers);
     registerCommand(cmdReg, "agg", handlerAgg);
-    registerCommand(cmdReg, "addfeed", handlerAddFeed);
+    registerCommand(cmdReg, "addfeed", middlewareLoggedIn(handlerAddFeed));
     registerCommand(cmdReg, "feeds", handlerFeeds);
-    registerCommand(cmdReg, "follow", handlerFollow);
+    registerCommand(cmdReg, "follow", middlewareLoggedIn(handlerFollow));
+    registerCommand(cmdReg, "following", middlewareLoggedIn(handlerFollowing));
+    registerCommand(cmdReg, "unfollow", middlewareLoggedIn(handlerUnfollow));
     const commandName = argv[2];
     if (commandName === undefined) {
         console.error("No command provided. Terminating.");

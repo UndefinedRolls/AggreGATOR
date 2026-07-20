@@ -1,7 +1,6 @@
 import {db} from "./index.js";
-import {feed_follows, feeds, users} from "./schema.js";
+import {feeds, users} from "./schema.js";
 import {eq, sql} from "drizzle-orm";
-import {timestamp} from "drizzle-orm/pg-core";
 
 export type Feed = typeof feeds.$inferSelect;
 
@@ -19,7 +18,6 @@ export async function getAllFeeds():Promise<Feed[]>{
 
 }
 export async function getFeedsAndUserName(){
-//    return db.select({Username:users.name, Name:feeds.name, ID:feeds.id, URL:feeds.url}).from(feeds).innerJoin(users, eq(users.id, feeds.user_id));
     return db.select({feed:feeds, user:users}).from(feeds).innerJoin(users, eq(users.id, feeds.user_id));
 
 }
@@ -37,3 +35,4 @@ export async function getFeedByID(id:string){
 export function markFeedFetched(id:string){
     return db.update(feeds).set({last_fetched_at:new Date(), updatedAt:new Date()}).where(eq(feeds.id, id)).returning();
 }
+
